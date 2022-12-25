@@ -1,0 +1,8 @@
+// protocol for fx service
+
+message FxServiceRequest {
+  required string SourceCurrencyCode = 1;
+  required string TargetCurrencyCode = 2;
+
+
+}

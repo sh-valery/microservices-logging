@@ -1,0 +1,3 @@
+message Base {
+  optional string LogID = 1;
+}
