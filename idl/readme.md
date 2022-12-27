@@ -24,7 +24,7 @@ This section describe how to generate the code for populating, serializing, and 
 cd fx
 protoc --proto_path=../idl \
     --go_out=./internal/rpc_gen --go_opt=paths=source_relative \
-    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    --go-grpc_out=./internal/rpc_gen --go-grpc_opt=paths=source_relative \
     ../idl/fx.proto ../idl/base.proto
 ```
 
