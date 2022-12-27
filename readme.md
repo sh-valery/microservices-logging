@@ -29,3 +29,22 @@ Let's assume our fx can't process amounts more than 1000. We will emulate this b
 Let's assume our http gateway can't process SGD currency. We will emulate this behaviour in the http gateway.     
 
 # Building and running the project
+
+## Running separately
+### 1. Run FX service
+
+```bash
+cd fx
+go run ./cmd/rpc_server/main.go
+```
+
+you should see
+```bash
+2022/12/28 00:19:00 server listening at [::]:50051
+```
+
+validate that the service is running with rpc client
+```bash
+go run ./cmd/client_get_fx/main.go
+```
+todo: 2. check client run
