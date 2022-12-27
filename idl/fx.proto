@@ -1,8 +1,10 @@
-// protocol for fx service
+syntax = "proto3";
+
+option go_package = "./rpc_gen"; // in big projects separate packages
 
 message FxServiceRequest {
-  required string SourceCurrencyCode = 1;
-  required string TargetCurrencyCode = 2;
+  string SourceCurrencyCode = 1;
+  string TargetCurrencyCode = 2;
 
 
 }

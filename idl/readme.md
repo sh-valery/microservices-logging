@@ -15,3 +15,23 @@ Base message should be integrated in all RPC requests and responses. It contains
 Gateway uses the proto files from this repository to generate a client for the FX service. The client is located in the `gateway/internal/fx` folder.
 
 FX service uses the proto files from this repository to generate a server. The server is located in the `fx/internal/fx` folder.
+
+# Generate code
+This section describe how to generate the code for populating, serializing, and retrieving request and response message types.
+
+## generate server
+```bash
+cd f
+protoc --go_out=. --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    idl/fx.proto idl/base.proto
+```
+
+## generate client
+```bash
+cd gateway
+protoc --proto_path=../idl \
+    --go_out=./internal/rpc_gen --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    ../idl/fx.proto ../idl/base.proto
+```
