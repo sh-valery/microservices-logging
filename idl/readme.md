@@ -21,10 +21,11 @@ This section describe how to generate the code for populating, serializing, and 
 
 ## generate server
 ```bash
-cd f
-protoc --go_out=. --go_opt=paths=source_relative \
+cd fx
+protoc --proto_path=../idl \
+    --go_out=./internal/rpc_gen --go_opt=paths=source_relative \
     --go-grpc_out=. --go-grpc_opt=paths=source_relative \
-    idl/fx.proto idl/base.proto
+    ../idl/fx.proto ../idl/base.proto
 ```
 
 ## generate client
