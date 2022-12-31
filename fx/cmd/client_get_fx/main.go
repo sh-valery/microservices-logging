@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	// todo: 1. complete client connection
+	// todo: 1. complete client connection, to the server
 	client := r.NewFxServiceClient(grpc.ClientConnInterface())
 
 	})
