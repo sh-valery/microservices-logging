@@ -1,5 +1,9 @@
 package model
 
+import (
+	"time"
+)
+
 type FXRequest struct {
 	SourceCurrency string
 	TargetCurrency string
@@ -12,5 +16,5 @@ type FXResponse struct {
 	TargetCurrency string
 	SourceAmount   float64
 	DistAmount     float64
-	Date           string
+	DateTime       time.Time
 }

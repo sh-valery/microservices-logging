@@ -5,11 +5,13 @@ import (
 	m "github.com/sh-valery/microservices-logging/gateway/internal/model"
 	r "github.com/sh-valery/microservices-logging/gateway/internal/rpc_gen"
 	"github.com/shopspring/decimal"
+	"google.golang.org/grpc"
+	"time"
 )
 
 //go:generate mockgen -source=fx.go -destination=../mock/fx.go -package=mocks
 type FXRate interface {
-	GetFxRate(ctx context.Context, request *r.FxServiceRequest) (*r.FxServiceResponse, error)
+	GetFxRate(ctx context.Context, in *r.FxServiceRequest, opts ...grpc.CallOption) (*r.FxServiceResponse, error)
 }
 
 type UUIDGenerator interface {
@@ -17,7 +19,7 @@ type UUIDGenerator interface {
 }
 
 type Now interface {
-	Now() string
+	Now() time.Time
 }
 
 type FXService struct {
@@ -44,6 +46,6 @@ func (f *FXService) GetQuote(ctx context.Context, request *m.FXRequest) (m.FXRes
 		TargetCurrency: rpcResponse.TargetCurrencyCode,
 		SourceAmount:   request.SourceAmount,
 		DistAmount:     distAmount.InexactFloat64(),
-		Date:           f.Date.Now(),
+		DateTime:       f.Date.Now(),
 	}, nil
 }

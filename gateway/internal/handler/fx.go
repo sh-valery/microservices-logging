@@ -7,13 +7,21 @@ import (
 	"net/http"
 )
 
+type fxHandler struct {
+	quotationService Quotation
+}
+
+func NewFxHandler(s Quotation) *fxHandler {
+	return &fxHandler{
+		quotationService: s,
+	}
+}
+
 type Quotation interface {
 	GetQuote(ctx context.Context, request *m.FXRequest) (m.FXResponse, error)
 }
 
-var QuotationService Quotation
-
-func HandleFXRequest(c *gin.Context) {
+func (f *fxHandler) HandleFXRequest(c *gin.Context) {
 	// Parse request body
 	serviceRequest := &m.FXRequest{}
 	err := c.ShouldBindJSON(serviceRequest)
@@ -23,7 +31,7 @@ func HandleFXRequest(c *gin.Context) {
 	}
 
 	// Call service layer in or case just rpc
-	result, err := QuotationService.GetQuote(c, serviceRequest)
+	result, err := f.quotationService.GetQuote(c, serviceRequest)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return

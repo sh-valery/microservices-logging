@@ -7,9 +7,11 @@ package mocks
 import (
 	context "context"
 	reflect "reflect"
+	time "time"
 
 	gomock "github.com/golang/mock/gomock"
 	rpc_gen "github.com/sh-valery/microservices-logging/gateway/internal/rpc_gen"
+	grpc "google.golang.org/grpc"
 )
 
 // MockFXRate is a mock of FXRate interface.
@@ -36,18 +38,23 @@ func (m *MockFXRate) EXPECT() *MockFXRateMockRecorder {
 }
 
 // GetFxRate mocks base method.
-func (m *MockFXRate) GetFxRate(ctx context.Context, request *rpc_gen.FxServiceRequest) (*rpc_gen.FxServiceResponse, error) {
+func (m *MockFXRate) GetFxRate(ctx context.Context, in *rpc_gen.FxServiceRequest, opts ...grpc.CallOption) (*rpc_gen.FxServiceResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetFxRate", ctx, request)
+	varargs := []interface{}{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetFxRate", varargs...)
 	ret0, _ := ret[0].(*rpc_gen.FxServiceResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetFxRate indicates an expected call of GetFxRate.
-func (mr *MockFXRateMockRecorder) GetFxRate(ctx, request interface{}) *gomock.Call {
+func (mr *MockFXRateMockRecorder) GetFxRate(ctx, in interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFxRate", reflect.TypeOf((*MockFXRate)(nil).GetFxRate), ctx, request)
+	varargs := append([]interface{}{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFxRate", reflect.TypeOf((*MockFXRate)(nil).GetFxRate), varargs...)
 }
 
 // MockUUIDGenerator is a mock of UUIDGenerator interface.
@@ -111,10 +118,10 @@ func (m *MockNow) EXPECT() *MockNowMockRecorder {
 }
 
 // Now mocks base method.
-func (m *MockNow) Now() string {
+func (m *MockNow) Now() time.Time {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Now")
-	ret0, _ := ret[0].(string)
+	ret0, _ := ret[0].(time.Time)
 	return ret0
 }
 
