@@ -1,4 +1,4 @@
-module github.com/sh-valery/microservices-logging
+module github.com/sh-valery/microservices-logging/fx
 
 go 1.19
 

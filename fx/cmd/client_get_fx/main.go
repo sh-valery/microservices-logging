@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"flag"
-	r "github.com/sh-valery/microservices-logging/internal/rpc_gen"
+	r "github.com/sh-valery/microservices-logging/fx/internal/rpc_gen"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"log"

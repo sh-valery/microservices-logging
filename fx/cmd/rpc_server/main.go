@@ -4,14 +4,14 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	r "github.com/sh-valery/microservices-logging/internal/rpc_gen"
+	r "github.com/sh-valery/microservices-logging/fx/internal/rpc_gen"
 	"google.golang.org/grpc"
 	"log"
 	"net"
 )
 
 type FX struct {
-	// you can inject any service here, dal to connect to db or cache or any other service
+	// you can inject any service here, dal to connect to db or cache or any others
 	// you can mock dependencies in tests
 	r.UnimplementedFxServiceServer
 }

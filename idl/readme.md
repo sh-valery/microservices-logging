@@ -33,6 +33,6 @@ protoc --proto_path=../idl \
 cd gateway
 protoc --proto_path=../idl \
     --go_out=./internal/rpc_gen --go_opt=paths=source_relative \
-    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    --go-grpc_out=./internal/rpc_gen --go-grpc_opt=paths=source_relative \
     ../idl/fx.proto ../idl/base.proto
 ```
