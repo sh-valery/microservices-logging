@@ -20,7 +20,7 @@ func main() {
 	// init rpc connection
 	conn, err := grpc.Dial(*host, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		log.Fatalf("connection error: %v", err)
+		log.Fatalf("rpc connection error: %v", err)
 	}
 	defer func() {
 		err = conn.Close()

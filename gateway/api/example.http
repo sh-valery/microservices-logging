@@ -1,10 +1,10 @@
 ### Send POST request with json body
-POST https://localhost:8080/api/v1/fx
+POST http://localhost:8080/api/v1/fx
 Content-Type: application/json
 
 {
-  "SourceCurrencyCode": "CHF",
-  "TargetCurrencyCode": "USD",
+  "SourceCurrency": "CHF",
+  "TargetCurrency": "USD",
   "SourceAmount": 100.09
 }
 

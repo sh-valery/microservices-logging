@@ -5,16 +5,16 @@ import (
 )
 
 type FXRequest struct {
-	SourceCurrency string
-	TargetCurrency string
-	SourceAmount   float64
+	SourceCurrency string  `json:"sourceCurrency"`
+	TargetCurrency string  `json:"targetCurrency"`
+	SourceAmount   float64 `json:"SourceAmount"`
 }
 
 type FXResponse struct {
-	QuotationID    string
-	SourceCurrency string
-	TargetCurrency string
-	SourceAmount   float64
-	DistAmount     float64
-	DateTime       time.Time
+	QuotationID    string    `json:"QuotationID"`
+	SourceCurrency string    `json:"SourceCurrency"`
+	TargetCurrency string    `json:"TargetCurrency"`
+	SourceAmount   float64   `json:"SourceAmount"`
+	DistAmount     float64   `json:"DistAmount"`
+	DateTime       time.Time `json:"DateTime"`
 }

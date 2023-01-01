@@ -24,7 +24,7 @@ func (f *FX) GetFxRate(ctx context.Context, request *r.FxServiceRequest) (*r.FxS
 	return &r.FxServiceResponse{
 		SourceCurrencyCode: request.GetSourceCurrencyCode(),
 		TargetCurrencyCode: request.GetTargetCurrencyCode(),
-		Rate:               1.0,
+		Rate:               1.75,
 	}, nil
 }
 
