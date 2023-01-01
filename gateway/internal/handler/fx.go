@@ -3,29 +3,27 @@ package handler
 import (
 	"context"
 	"github.com/gin-gonic/gin"
-	r "github.com/sh-valery/microservices-logging/gateway/internal/rpc_gen"
+	m "github.com/sh-valery/microservices-logging/gateway/internal/model"
 	"net/http"
 )
 
-// FX interface in the example ss equal the rpc call,
-// but in real project rpc should be incapsulated in the service layer with some business logic
-type FX interface {
-	GetFxRate(ctx context.Context, request *r.FxServiceRequest) (*r.FxServiceResponse, error)
+type Quotation interface {
+	GetQuote(ctx context.Context, request *m.FXRequest) (m.FXResponse, error)
 }
 
-var FXService FX
+var QuotationService Quotation
 
 func HandleFXRequest(c *gin.Context) {
 	// Parse request body
-	rpcRequest := &r.FxServiceRequest{}
-	err := c.ShouldBindJSON(rpcRequest)
+	serviceRequest := &m.FXRequest{}
+	err := c.ShouldBindJSON(serviceRequest)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
 		return
 	}
 
 	// Call service layer in or case just rpc
-	result, err := FXService.GetFxRate(c, rpcRequest)
+	result, err := QuotationService.GetQuote(c, serviceRequest)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return

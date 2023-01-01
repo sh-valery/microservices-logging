@@ -4,7 +4,8 @@ Content-Type: application/json
 
 {
   "SourceCurrencyCode": "CHF",
-  "TargetCurrencyCode": "USD"
+  "TargetCurrencyCode": "USD",
+  "SourceAmount": 100.09
 }
 
 > {%
