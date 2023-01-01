@@ -25,11 +25,6 @@ type FxServiceClient interface {
 	GetFxRate(ctx context.Context, in *FxServiceRequest, opts ...grpc.CallOption) (*FxServiceResponse, error)
 }
 
-func (f FxServiceClient) GetFxRate(ctx context.Context, request *FxServiceRequest) (*FxServiceResponse, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
 type fxServiceClient struct {
 	cc grpc.ClientConnInterface
 }
