@@ -16,7 +16,6 @@ COPY --from=builder /app/run_web_server .
 
 EXPOSE 8080
 
-#CMD ["./run_server"]
 # never separate the command and output redirection
 CMD [ "/bin/sh", "-c", "/app/run_web_server > /var/log/gateway.log" ]
 

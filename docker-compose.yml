@@ -12,7 +12,7 @@ services:
     networks:
       - monitoring
       - backend
-    command:  "/bin/sh", "-c", "/app/run_rpc_server host fx:50051 > /var/log/fx.log"
+#    command:  "/bin/sh", "-c", "/app/run_rpc_server host fx:50051 > /var/log/fx.log"
   web:
     depends_on:
       - fx

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"time"
@@ -19,11 +20,24 @@ func LoggerMiddleware(logger *zap.Logger) gin.HandlerFunc {
 		c.Next()
 		cost := time.Since(start)
 
+		// log body for POST, PUT, PATCH. Our gateway expects only json format
+		var reqJSONBody []byte
+		var err error
+		if c.Request.Method == "POST" || c.Request.Method == "PUT" || c.Request.Method == "PATCH" {
+			reqJSONBody, err = json.Marshal(c.Request)
+			if err != nil {
+				logger.Error("Can't parse request body", zap.Error(err))
+				reqJSONBody = []byte("Unable to parse request body")
+			}
+		}
+
+		// log basic info
 		logger.Info(path,
 			zap.String(DefaultTrackHeader, c.GetHeader(DefaultTrackHeader)),
 			zap.Int("status", c.Writer.Status()),
 			zap.String("method", c.Request.Method),
 			zap.String("path", path),
+			zap.String("requestBody", string(reqJSONBody)),
 			zap.String("query", query),
 			zap.String("ip", c.ClientIP()),
 			zap.String("userAgent", c.Request.UserAgent()),
