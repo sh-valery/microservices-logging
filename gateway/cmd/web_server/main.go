@@ -7,6 +7,7 @@ import (
 	"github.com/sh-valery/microservices-logging/gateway/internal/rpc_gen"
 	"github.com/sh-valery/microservices-logging/gateway/internal/service"
 	"github.com/sh-valery/microservices-logging/gateway/internal/util"
+	"github.com/sh-valery/microservices-logging/gateway/pkg/middleware"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"log"
@@ -40,8 +41,15 @@ func main() {
 	// init handler, inject service layer into handler
 	fxHandler := handler.NewFxHandler(serviceLayer)
 
-	// init router
+	// init middleware
 	r := gin.Default()
+	r.Use(gin.Recovery())
+	r.Use(middleware.TrackHeader())
+
+	middleware.InitLogger()
+	r.Use(middleware.LoggerMiddleware(middleware.Logger))
+
+	// init router
 	v1 := r.Group("api/v1")
 	v1.POST("/fx", func(c *gin.Context) {
 		fxHandler.HandleFXRequest(c)
