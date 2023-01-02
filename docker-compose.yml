@@ -12,7 +12,6 @@ services:
     networks:
       - monitoring
       - backend
-#    command:  "/bin/sh", "-c", "/app/run_rpc_server host fx:50051 > /var/log/fx.log"
   web:
     depends_on:
       - fx
@@ -24,9 +23,9 @@ services:
     networks:
       - monitoring
       - backend
-#    environment:
-#      - "GIN_MODE=release"
-    command: [ "/bin/sh", "-c", "/app/run_web_server host fx:50051 > /var/log/gateway.log" ]
+    environment:
+      - "GIN_MODE=release"
+    command: [ "/bin/sh", "-c", "/app/run_web_server -host fx:50051 > /var/log/gateway.log" ]
 
   prometheus:
     image: prom/prometheus:v2.34.0
