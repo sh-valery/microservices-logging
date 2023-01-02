@@ -24,8 +24,8 @@ services:
     networks:
       - monitoring
       - backend
-    environment:
-      - "GIN_MODE=release"
+#    environment:
+#      - "GIN_MODE=release"
     command: [ "/bin/sh", "-c", "/app/run_web_server host fx:50051 > /var/log/gateway.log" ]
 
   prometheus:
