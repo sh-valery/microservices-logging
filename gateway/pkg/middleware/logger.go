@@ -1,9 +1,10 @@
 package middleware
 
 import (
-	"encoding/json"
+	"bytes"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"io"
 	"time"
 )
 
@@ -17,27 +18,22 @@ func LoggerMiddleware(logger *zap.Logger) gin.HandlerFunc {
 		start := time.Now()
 		path := c.Request.URL.Path
 		query := c.Request.URL.RawQuery
+		// body can be read once, so copy it for logging and create a buffer back
+		body, err := c.GetRawData()
+		c.Request.Body = io.NopCloser(bytes.NewBuffer(body))
 		c.Next()
 		cost := time.Since(start)
 
-		// log body for POST, PUT, PATCH. Our gateway expects only json format
-		var reqJSONBody []byte
-		var err error
-		if c.Request.Method == "POST" || c.Request.Method == "PUT" || c.Request.Method == "PATCH" {
-			reqJSONBody, err = json.Marshal(c.Request)
-			if err != nil {
-				logger.Error("Can't parse request body", zap.Error(err))
-				reqJSONBody = []byte("Unable to parse request body")
-			}
+		if err != nil {
+			logger.Error("Can't parse request body", zap.Error(err))
 		}
 
-		// log basic info
-		logger.Info(path,
+		logger.Info("Request",
 			zap.String(DefaultTrackHeader, c.GetHeader(DefaultTrackHeader)),
 			zap.Int("status", c.Writer.Status()),
 			zap.String("method", c.Request.Method),
 			zap.String("path", path),
-			zap.String("requestBody", string(reqJSONBody)),
+			zap.String("requestBody", string(body)),
 			zap.String("query", query),
 			zap.String("ip", c.ClientIP()),
 			zap.String("userAgent", c.Request.UserAgent()),
