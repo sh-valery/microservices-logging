@@ -34,17 +34,15 @@ Let's assume our http gateway can't process SGD currency. We will emulate this b
 ```bash
  docker-compose up -d
  ```
-you should see the following output:
-```bash
-```
 
-to check the containers:
+check that all services are running
 ```bash
 docker ps
 ```
 
 
-## Running separately
+
+## Running compiled binaries
 ### 1. Run FX service
 
 ```bash
@@ -67,7 +65,6 @@ todo: 2. check client run
 # Check the logs
 
 ## Run an fx request
-
 Send requests from gateway/api/example.http or use curl:
 ```bash
 curl -X POST \
