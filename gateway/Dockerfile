@@ -18,6 +18,6 @@ EXPOSE 8080
 
 #CMD ["./run_server"]
 # never separate the command and output redirection
-CMD [ "/bin/sh", "-c", "/run_server > /var/log/gateway.log" ]
+CMD [ "/bin/sh", "-c", "/app/run_server > /var/log/gateway.log" ]
 
 

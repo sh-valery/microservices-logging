@@ -30,6 +30,20 @@ Let's assume our http gateway can't process SGD currency. We will emulate this b
 
 # Building and running the project
 
+## Running in docker compose
+```bash
+ docker-compose up -d
+ ```
+you should see the following output:
+```bash
+```
+
+to check the containers:
+```bash
+docker ps
+```
+
+
 ## Running separately
 ### 1. Run FX service
 
@@ -48,3 +62,23 @@ validate that the service is running with rpc client
 go run ./cmd/client_get_fx/main.go
 ```
 todo: 2. check client run
+
+
+# Check the logs
+
+## Run an fx request
+
+Send requests from gateway/api/example.http or use curl:
+```bash
+curl -X POST \
+  http://localhost:8080/api/v1/fx \
+  -H 'Content-Type: application/json' \
+  -d '{
+          "SourceCurrency": "CHF",
+          "TargetCurrency": "USD",
+          "SourceAmount": 100.09
+      }'
+```
+In the response you can find a trackID header to track the request in the logs between microservices.
+
+After that you can open grafana in your browser http://localhost:3000 and check the logs

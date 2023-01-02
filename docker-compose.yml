@@ -1,0 +1,66 @@
+volumes:
+  log_volume:
+  grafana_data:
+
+networks:
+  monitoring:
+  backend:
+
+services:
+  fx:
+    build: ./fx
+    networks:
+      - monitoring
+      - backend
+  web:
+    depends_on:
+      - fx
+    build: ./gateway
+    volumes:
+      - log_volume:/var/log
+    ports:
+      - "8080:8080"
+    networks:
+      - monitoring
+      - backend
+
+  prometheus:
+    image: prom/prometheus:v2.34.0
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    ports:
+      - 9090:9090
+    networks:
+      - monitoring
+
+
+  monitoring:
+    image: grafana/monitoring:2.5.0
+    command: -config.file=/etc/monitoring/local-config.yaml
+    networks:
+      - monitoring
+
+
+  promtail:
+    image: grafana/promtail:2.5.0
+    volumes:
+      - log_volume:/var/log
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - monitoring
+
+
+  grafana:
+    depends_on:
+      - monitoring
+      - prometheus
+    image: grafana/grafana:latest
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - monitoring
