@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+const DefaultTrackHeader = "X-Request-ID"
+
 var Logger *zap.Logger
 var Sugar *zap.SugaredLogger
 
