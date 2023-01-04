@@ -20,8 +20,15 @@ It's a simple service that accepts a request from a user, checks auth, takes res
 It's our intenal service that accepts a request from the gateway, and 
 
 
-### Logging system
-We will store logs in 
+# Logging system
+Loggers are define in logger package, it has a structured and sugared loggers.
+
+There is a middleware that logs every request and time of processing.
+
+Additionally logger has a withContext wrapper,
+the withContext func takes the trackID from the ctx, to avoid passing the trackID in every log function.
+
+
 
 ## Emulate error behaviour
 Let's assume our fx can't process amounts more than 1000. We will emulate this behaviour in the rpc service.
