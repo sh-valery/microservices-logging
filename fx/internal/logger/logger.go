@@ -7,9 +7,11 @@ var Sugar *zap.SugaredLogger
 
 func InitLogger() {
 	cfg := zap.NewProductionConfig()
+
 	cfg.OutputPaths = []string{"stdout"}
 	cfg.ErrorOutputPaths = []string{"stderr"}
 	logger, err := cfg.Build()
+	logger.With()
 	if err != nil {
 		panic(err)
 	}

@@ -51,9 +51,15 @@ services:
     networks:
       - monitoring
 
+  loki:
+    image: grafana/loki:latest
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - monitoring
+
   grafana:
     depends_on:
-      - monitoring
+#      - monitoring
       - prometheus
     image: grafana/grafana:latest
     volumes:

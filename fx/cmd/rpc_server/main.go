@@ -4,9 +4,9 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	l "github.com/sh-valery/microservices-logging/fx/internal/logger"
 	r "github.com/sh-valery/microservices-logging/fx/internal/rpc_gen"
 	"google.golang.org/grpc"
-	"log"
 	"net"
 )
 
@@ -30,14 +30,15 @@ func (f *FX) GetFxRate(ctx context.Context, request *r.FxServiceRequest) (*r.FxS
 
 func main() {
 	flag.Parse()
+	l.InitLogger()
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		l.Sugar.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
 	r.RegisterFxServiceServer(s, &FX{})
-	log.Printf("server listening at %v", lis.Addr())
+	l.Sugar.Infof("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		l.Sugar.Fatalf("failed to serve: %v", err)
 	}
 }

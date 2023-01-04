@@ -3,7 +3,7 @@ package middleware
 import (
 	"bytes"
 	"github.com/gin-gonic/gin"
-	l "github.com/sh-valery/microservices-logging/gateway/pkg/logger"
+	l "github.com/sh-valery/microservices-logging/gateway/internal/logger"
 	"go.uber.org/zap"
 	"io"
 	"time"
@@ -27,7 +27,7 @@ func LoggerMiddleware() gin.HandlerFunc {
 		}
 
 		l.Logger.Info("Request",
-			zap.String(DefaultTrackHeader, c.GetHeader(DefaultTrackHeader)),
+			zap.String("requestID", c.GetHeader(DefaultTrackHeader)),
 			zap.Int("status", c.Writer.Status()),
 			zap.String("method", c.Request.Method),
 			zap.String("path", path),
