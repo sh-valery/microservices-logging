@@ -3,5 +3,5 @@ syntax = "proto3";
 option go_package = "./rpc_gen";
 
 message Base {
-  optional string LogID = 1;
+  optional string RequestID = 1;
 }

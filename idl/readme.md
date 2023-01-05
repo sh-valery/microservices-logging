@@ -30,7 +30,7 @@ protoc --proto_path=../idl \
 
 ## generate client
 ```bash
-cd gateway
+cd ../gateway
 protoc --proto_path=../idl \
     --go_out=./internal/rpc_gen --go_opt=paths=source_relative \
     --go-grpc_out=./internal/rpc_gen --go-grpc_opt=paths=source_relative \

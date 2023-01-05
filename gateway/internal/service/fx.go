@@ -29,9 +29,14 @@ type FXService struct {
 }
 
 func (f *FXService) GetQuote(ctx context.Context, request *m.FXRequest) (m.FXResponse, error) {
+	requestID := ctx.Value("requestID").(string)
 	rpcRequest := &r.FxServiceRequest{
 		SourceCurrencyCode: request.SourceCurrency,
 		TargetCurrencyCode: request.TargetCurrency,
+
+		Base: &r.Base{
+			RequestID: &requestID,
+		},
 	}
 	rpcResponse, err := f.FX.GetFxRate(ctx, rpcRequest)
 	if err != nil {
