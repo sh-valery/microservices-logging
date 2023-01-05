@@ -5,13 +5,15 @@ import (
 	"flag"
 	"fmt"
 	l "github.com/sh-valery/microservices-logging/fx/internal/logger"
+	"github.com/sh-valery/microservices-logging/fx/internal/middleware"
 	r "github.com/sh-valery/microservices-logging/fx/internal/rpc_gen"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"net"
 )
 
 type FX struct {
-	// you can inject any service here, dal to connect to db or cache or any others
+	// you can inject any service here, dal to connect to db, cache and any others
 	// you can mock dependencies in tests
 	r.UnimplementedFxServiceServer
 }
@@ -21,6 +23,15 @@ var (
 )
 
 func (f *FX) GetFxRate(ctx context.Context, request *r.FxServiceRequest) (*r.FxServiceResponse, error) {
+	l.WithContext(ctx).Sugar().Infof("GetFxRate request: %+v", request)
+
+	// way 1: use grpc metadata to get requestID form context, middleware passes it from header to context
+	l.WithContext(ctx).Info("Header(context) RequestID: ")
+
+	// way 2: use Base request struct in all requests/response,  it works for all request types
+	l.Sugar.Info("Base struct RequestID: ",
+		zap.String("requestID", request.GetBase().GetRequestID()))
+
 	return &r.FxServiceResponse{
 		SourceCurrencyCode: request.GetSourceCurrencyCode(),
 		TargetCurrencyCode: request.GetTargetCurrencyCode(),
@@ -35,7 +46,9 @@ func main() {
 	if err != nil {
 		l.Sugar.Fatalf("failed to listen: %v", err)
 	}
-	s := grpc.NewServer()
+	// run grpc server without middleware, if you need grpc streaming
+	s := grpc.NewServer(grpc.UnaryInterceptor(middleware.HeaderMiddleware))
+
 	r.RegisterFxServiceServer(s, &FX{})
 	l.Sugar.Infof("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {

@@ -1,6 +1,9 @@
 package logger
 
-import "go.uber.org/zap"
+import (
+	"context"
+	"go.uber.org/zap"
+)
 
 var Logger *zap.Logger
 var Sugar *zap.SugaredLogger
@@ -21,4 +24,17 @@ func InitLogger() {
 	Logger.Info("Test info output 1/3")
 	Logger.Error("Test error output 2/3")
 	Logger.Warn("Test warn output 3/3")
+}
+
+func WithContext(ctx context.Context) *zap.Logger {
+	if ctx == nil {
+		return Logger
+	}
+
+	requestID, ok := ctx.Value("requestID").(string)
+	if !ok {
+		requestID = "unknown"
+	}
+
+	return Logger.With(zap.String("requestID", requestID))
 }

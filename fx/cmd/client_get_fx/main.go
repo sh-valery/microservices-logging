@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"flag"
+	"github.com/google/uuid"
 	r "github.com/sh-valery/microservices-logging/fx/internal/rpc_gen"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/metadata"
 	"log"
 )
 
@@ -36,7 +38,8 @@ func main() {
 	log.Printf("request from the client: %+v", request)
 
 	// send request
-	response, err := client.GetFxRate(context.Background(), request)
+	md := metadata.Pairs("requestID", uuid.New().String())
+	response, err := client.GetFxRate(context.Background(), request, grpc.Header(&md))
 	if err != nil {
 		log.Fatal(err)
 	}
