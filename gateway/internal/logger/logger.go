@@ -30,8 +30,7 @@ func WithContext(ctx context.Context) *zap.Logger {
 		return Logger
 	}
 
-	trackHeader := "X-Request-ID"
-	requestID, ok := ctx.Value(trackHeader).(string)
+	requestID, ok := ctx.Value("requestID").(string)
 	if !ok {
 		requestID = "unknown"
 	}

@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-const DefaultTrackHeader = "X-Request-ID"
+const DefaultTrackHeader = "requestID"
 
 func LoggerMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {

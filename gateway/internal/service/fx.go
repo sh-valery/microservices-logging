@@ -6,6 +6,7 @@ import (
 	r "github.com/sh-valery/microservices-logging/gateway/internal/rpc_gen"
 	"github.com/shopspring/decimal"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	"time"
 )
 
@@ -33,12 +34,14 @@ func (f *FXService) GetQuote(ctx context.Context, request *m.FXRequest) (m.FXRes
 	rpcRequest := &r.FxServiceRequest{
 		SourceCurrencyCode: request.SourceCurrency,
 		TargetCurrencyCode: request.TargetCurrency,
-
+		// logging for rpc: way 1 use Base request in all requests/response,  it works for all request types
 		Base: &r.Base{
 			RequestID: &requestID,
 		},
 	}
-	rpcResponse, err := f.FX.GetFxRate(ctx, rpcRequest)
+	// logging for rpc: way 2 for rpc set metadata in rpc header, it works for unary requests only, not for streams
+	md := metadata.Pairs("requestID", requestID)
+	rpcResponse, err := f.FX.GetFxRate(ctx, rpcRequest, grpc.Header(&md))
 	if err != nil {
 		return m.FXResponse{}, err
 	}
