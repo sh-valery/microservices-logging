@@ -1,14 +1,29 @@
 # Disclaimer
 It's essential to understand in which part of the program something goes wrong. Primarily it's important when we have a lot of services that interact with each other.
+The project show how to orginize logging in the organisation, that use different services and intercation ways between them.
 
 # About the project
-The folder structure of the project one layer higher than the standard one. Because we have more than one services
-IDL for example should be a dedicated repository, and every service is a separate repository.
+The folder structure of the project one layer higher than usualy, it can be considered as a mono-repository for the organisation.
+IDL for example should be a dedicated repository, fx service and gateway as well.
 
 
-## Idea
-We will use a middleware that set logID header for every http request. The same logID can be transferred in the base part of the RPC requests.
 
+## Logging base
+Every request should be logged with the requestID. The requestID id is generated in the gateway by tracking middleware and injected to headers and context, to pass to other services. 
+For demonstration requestID provides in the response header. The requestID is used to find the request in the logs.
+
+### Logging in the http interaction
+When service is interacted with other services by HTTP we use header to store  the requestID.
+
+### Logging in the grpc interaction
+When service is interacted with other services by GRPC we have 2 ways to pass the requestID.
+* Use metadata to store the requestID.
+* Use Base rpc struct and incapsulate it in the all request and response structs.
+In the current project we use both ways for demonstration.
+
+## Logging context
+Logger has a context wrapper that takes the requestID from the context and adds it to the log message.
+To avoid manual adding the requestID to the context.
 
 ## Tech info
 We have 2 services, http gateway to accept a user request, and rpc FX service. Our main goal to create a logging system between microservices.
@@ -17,16 +32,13 @@ We have 2 services, http gateway to accept a user request, and rpc FX service. O
 It's a simple service that accepts a request from a user, checks auth, takes response from the FX service and return it to the user.
 
 ### RPC FX service
-It's our intenal service that accepts a request from the gateway, and 
+It's our intenal service that accepts a request from the gateway, and
+returns fx rate for the currency pair. API is defined in IDL folder.
 
 
 # Logging system
 Loggers are define in logger package, it has a structured and sugared loggers.
-
 There is a middleware that logs every request and time of processing.
-
-Additionally logger has a withContext wrapper,
-the withContext func takes the trackID from the ctx, to avoid passing the trackID in every log function.
 
 
 
