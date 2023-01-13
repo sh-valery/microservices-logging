@@ -83,6 +83,64 @@ todo: 2. check client run
 
 # Check the logs
 
+## Import data sources and dashboards
+Grafana API can be used to import data sources and dashboards to avoid manual import with grafana fe
+
+```bash
+### import loki data source to grafana
+POST http://localhost:3000/api/datasources
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{
+  "orgId": 1,
+  "name": "Loki",
+  "type": "loki",
+  "typeName": "Loki",
+  "typeLogoUrl": "public/app/plugins/datasource/loki/img/loki_icon.svg",
+  "access": "proxy",
+  "url": "http://loki:3100",
+  "password": "",
+  "user": "",
+  "database": "",
+  "basicAuth": false,
+  "isDefault": false,
+  "jsonData": {},
+  "readOnly": false
+}
+```
+```bash
+### import prometheus data source to grafana
+POST http://localhost:3000/api/datasources
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{
+  "orgId": 1,
+  "name": "Prometheus",
+  "type": "prometheus",
+  "typeName": "Prometheus",
+  "typeLogoUrl": "public/app/plugins/datasource/prometheus/img/prometheus_logo.svg",
+  "access": "proxy",
+  "url": "http://prometheus:9090",
+  "password": "",
+  "user": "",
+  "database": "",
+  "basicAuth": false,
+  "isDefault": true,
+  "jsonData": {
+    "httpMethod": "POST"
+  },
+  "readOnly": false
+}
+
+
+
+
+
+```
+
+
 ## Run an fx request
 Send requests from gateway/api/example.http or use curl:
 ```bash
