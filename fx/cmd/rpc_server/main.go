@@ -32,11 +32,46 @@ func (f *FX) GetFxRate(ctx context.Context, request *r.FxServiceRequest) (*r.FxS
 	l.Sugar.Info("Base struct RequestID: ",
 		zap.String("requestID", request.GetBase().GetRequestID()))
 
+	// error flow
+	rate, err := getFxRate(request.GetSourceCurrencyCode(), request.GetTargetCurrencyCode())
+	if err != nil {
+		l.Sugar.Errorf("GetFxRate error: %v", err)
+	}
+
+	// succeed flow
 	return &r.FxServiceResponse{
 		SourceCurrencyCode: request.GetSourceCurrencyCode(),
 		TargetCurrencyCode: request.GetTargetCurrencyCode(),
-		Rate:               1.75,
+		Rate:               rate,
 	}, nil
+}
+
+// it should be an external service
+func getFxRate(sourceCurrencyCode, targetCurrencyCode string) (float64, error) {
+	// currency code validation
+	if sourceCurrencyCode == "" || targetCurrencyCode == "" {
+		return 0, fmt.Errorf("empty currency code")
+	}
+
+	if sourceCurrencyCode != "USD" {
+		return 0, fmt.Errorf("source currency code is not supported")
+	}
+
+	rates := map[string]float64{
+		"USD": 1,
+		"EUR": 0.85,
+		"CHF": 0.9,
+		"GBP": 0.75,
+		"JPY": 110,
+		"CNY": 6.5,
+	}
+
+	rate, ok := rates[targetCurrencyCode]
+	if !ok {
+		return 0, fmt.Errorf("target currency code is not supported")
+	}
+
+	return rate, nil
 }
 
 func main() {

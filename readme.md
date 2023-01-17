@@ -148,11 +148,32 @@ curl -X POST \
   http://localhost:8080/api/v1/fx \
   -H 'Content-Type: application/json' \
   -d '{
-          "SourceCurrency": "CHF",
-          "TargetCurrency": "USD",
+          "SourceCurrency": "USD",
+          "TargetCurrency": "CHF",
           "SourceAmount": 100.09
       }'
 ```
 In the response you can find a trackID header to track the request in the logs between microservices.
 
 After that you can open grafana in your browser http://localhost:3000 and check the logs
+
+### Check the logs in grafana
+
+
+### Generate an error in the fx service
+
+fx service supports only `USD` as source currencies and 		`USD, EUR, CHF, GBP, JPY, CNY` as target currencies.
+If you send a request with other currencies you will get an error.
+Lets generate a request with SGD currency from gateway and find where the
+error happened.
+
+```bash
+curl -X POST \
+  http://localhost:8080/api/v1/fx \
+  -H 'Content-Type: application/json' \
+  -d '{
+          "SourceCurrency": "USD",
+          "TargetCurrency": "SGD",
+          "SourceAmount": 100.00
+      }'
+```
