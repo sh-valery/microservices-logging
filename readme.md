@@ -133,11 +133,6 @@ Content-Type: application/json
   },
   "readOnly": false
 }
-
-
-
-
-
 ```
 
 

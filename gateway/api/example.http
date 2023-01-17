@@ -1,10 +1,26 @@
-### Send POST request with json body
+### Valid request
 POST http://localhost:8080/api/v1/fx
 Content-Type: application/json
 
 {
-  "SourceCurrency": "CHF",
-  "TargetCurrency": "USD",
+  "SourceCurrency": "USD",
+  "TargetCurrency": "CHF",
+  "SourceAmount": 100.09
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+});
+%}
+
+### Invalid target currency
+POST http://localhost:8080/api/v1/fx
+Content-Type: application/json
+
+{
+  "SourceCurrency": "USD",
+  "TargetCurrency": "SGD",
   "SourceAmount": 100.09
 }
 
