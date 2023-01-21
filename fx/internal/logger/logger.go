@@ -31,10 +31,10 @@ func WithContext(ctx context.Context) *zap.Logger {
 		return Logger
 	}
 
-	requestID, ok := ctx.Value("requestID").(string)
+	requestID, ok := ctx.Value("requestid").(string) // ctx.set make the key lowercase
 	if !ok {
 		requestID = "unknown"
 	}
 
-	return Logger.With(zap.String("requestID", requestID))
+	return Logger.With(zap.String("requestid", requestID))
 }
