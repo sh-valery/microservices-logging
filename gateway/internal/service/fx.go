@@ -40,8 +40,13 @@ func (f *FXService) GetQuote(ctx context.Context, request *m.FXRequest) (m.FXRes
 		},
 	}
 	// logging for rpc: way 2 for rpc set metadata in rpc header, it works for unary requests only, not for streams
-	md := metadata.Pairs("requestID", requestID)
-	rpcResponse, err := f.FX.GetFxRate(ctx, rpcRequest, grpc.Header(&md))
+	md := metadata.New(map[string]string{"requestID": requestID})
+	ctx = metadata.NewOutgoingContext(ctx, md)
+
+	// Anything linked to this variable will fetch response headers.
+	var header metadata.MD
+
+	rpcResponse, err := f.FX.GetFxRate(ctx, rpcRequest, grpc.Header(&header))
 	if err != nil {
 		return m.FXResponse{}, err
 	}
