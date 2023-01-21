@@ -35,7 +35,12 @@ func (f *FX) GetFxRate(ctx context.Context, request *r.FxServiceRequest) (*r.FxS
 	// error flow
 	rate, err := getFxRate(request.GetSourceCurrencyCode(), request.GetTargetCurrencyCode())
 	if err != nil {
-		l.Sugar.Errorf("GetFxRate error: %v", err)
+		l.Sugar.Errorw("GetFxRate error",
+			"requestID", request.Base.GetRequestID(),
+			"error", err,
+			"sourceCurrencyCode", request.GetSourceCurrencyCode(),
+			"targetCurrencyCode", request.GetTargetCurrencyCode())
+		return nil, err
 	}
 
 	// succeed flow

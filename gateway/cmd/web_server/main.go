@@ -49,7 +49,7 @@ func main() {
 
 	// init middleware
 	l.Sugar.Info("Init router and middleware")
-	r := gin.Default()
+	r := gin.New()
 	r.Use(gin.Recovery())
 	r.Use(middleware.TrackHeader())
 
