@@ -29,7 +29,7 @@ func (f *FX) GetFxRate(ctx context.Context, request *r.FxServiceRequest) (*r.FxS
 	l.WithContext(ctx).Info("Header(context) RequestID: ")
 
 	// way 2: use Base request struct in all requests/response,  it works for all request types
-	l.Sugar.Info("Base struct RequestID: ",
+	l.Sugar.Info("Base struct",
 		zap.String("requestID", request.GetBase().GetRequestID()))
 
 	// error flow
