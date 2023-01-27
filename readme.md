@@ -7,8 +7,9 @@ The folder structure of the project one layer higher than usualy, it can be cons
 IDL for example should be a dedicated repository, fx service and gateway as well.
 
 
-
 ## Logging base
+![](https://github.com/sh-valery/microservices-logging/raw/master/gateway/doc/screenshot.png)
+
 Every request should be logged with the requestID. The requestID id is generated in the gateway by tracking middleware and injected to headers and context, to pass to other services. 
 For demonstration requestID provides in the response header. The requestID is used to find the request in the logs.
 
